@@ -8,24 +8,22 @@ import lombok.Getter;
 
 import org.example.Adapters.DateAdapter;
 import org.example.Adapters.LocalDateTimeAdapter;
+import org.example.CommonHelpers.EnvironmentHelper;
 import org.example.Models.ResponseModels.Response;
 import org.springframework.util.StringUtils;
 
-import javax.sql.rowset.serial.SerialBlob;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
 public class Translator
 {
-    private static final String API_URL = "http://localhost:8080/api";
-    private static final String JSON_CONTENT_TYPE = "application/json";
+    private static String API_URL = "";
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Getter
@@ -44,6 +42,20 @@ public class Translator
         Translator.webTemplateId = webTemplateId;
         Translator.carrierId = carrierId;
         Translator.auditUserId = userId;
+        switch(EnvironmentHelper.getCurrentGitBranch()){
+            case "development":
+                API_URL = "https://uc-dev-api-821485792142.us-central1.run.app:8080/api";
+                break;
+            case "staging":
+                API_URL = "";
+                break;
+            case "uat":
+                API_URL = "";
+                break;
+            case "main":
+                API_URL = "";
+                break;
+        }
     }
 
     public String getApiUrl(String endpoint) {
