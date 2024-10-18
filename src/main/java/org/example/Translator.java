@@ -2,13 +2,13 @@ package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.protobuf.Api;
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.GsonBuilder;
 import lombok.Getter;
 
 import org.example.Adapters.DateAdapter;
 import org.example.Adapters.LocalDateTimeAdapter;
-import org.example.CommonHelpers.EnvironmentHelper;
 import org.example.Models.ResponseModels.Response;
 import org.springframework.util.StringUtils;
 
@@ -25,40 +25,29 @@ public class Translator
 {
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    @Getter
     private static Long auditUserId, carrierId, webTemplateId;
+
+    private static String apiUrl;
 
     @Getter
     private static String token, wildCard;
-    protected Translator(String token, Long auditUserId, Long carrierId){
+    protected Translator(String token, Long auditUserId, Long carrierId, String apiUrl){
         Translator.token = token;
         Translator.auditUserId = auditUserId;
         Translator.carrierId = carrierId;
+        Translator.apiUrl = apiUrl;
     }
-    protected Translator(String token, String wildCard, Long webTemplateId, Long carrierId, Long userId) {
+    protected Translator(String token, String wildCard, Long webTemplateId, Long carrierId, Long userId, String apiUrl) {
         Translator.token = token;
         Translator.wildCard = wildCard;
         Translator.webTemplateId = webTemplateId;
         Translator.carrierId = carrierId;
         Translator.auditUserId = userId;
-    }
-
-    private String getApiUrl(){
-        switch(EnvironmentHelper.getCurrentGitBranch()){
-            case "development":
-               return "https://uc-dev-api-821485792142.us-central1.run.app:8080/api";
-            case "staging":
-                return "";
-            case "uat":
-                return "";
-            case "main":
-                return "";
-        }
-        return "";
+        Translator.apiUrl = apiUrl;
     }
 
     public String getApiUrl(String endpoint) {
-        StringBuilder urlBuilder = new StringBuilder(getApiUrl()).append("/").append(endpoint);
+        StringBuilder urlBuilder = new StringBuilder(apiUrl).append("/").append(endpoint);
 
         boolean isFirstQueryParam = true;
 
@@ -86,7 +75,7 @@ public class Translator
     }
 
     public String getApiUrl(String endpoint, Map<String, Object> queryParams) {
-        StringBuilder urlBuilder = new StringBuilder(getApiUrl()).append("/").append(endpoint);
+        StringBuilder urlBuilder = new StringBuilder(apiUrl).append("/").append(endpoint);
 
         boolean isFirstQueryParam = true;
 

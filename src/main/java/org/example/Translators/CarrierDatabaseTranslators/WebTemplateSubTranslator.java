@@ -17,12 +17,12 @@ import java.util.Collections;
 
 public class WebTemplateSubTranslator extends Translator implements IWebTemplateSubTranslator {
 
-    public WebTemplateSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public WebTemplateSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
-    public WebTemplateSubTranslator(String token, String wildCard, Long webTemplateId, Long carrierId, Long userId) {
-        super(token, wildCard, webTemplateId, carrierId, userId);
+    public WebTemplateSubTranslator(String token, String wildCard, Long webTemplateId, Long carrierId, Long userId, String apiUrl) {
+        super(token, wildCard, webTemplateId, carrierId, userId, apiUrl);
     }
 
     @Override

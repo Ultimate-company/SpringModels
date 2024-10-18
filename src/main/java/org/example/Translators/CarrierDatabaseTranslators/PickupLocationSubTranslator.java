@@ -15,8 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class PickupLocationSubTranslator extends Translator implements IPickupLocationSubTranslator {
-    public PickupLocationSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public PickupLocationSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

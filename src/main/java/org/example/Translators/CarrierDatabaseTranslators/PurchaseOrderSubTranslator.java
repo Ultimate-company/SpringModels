@@ -2,7 +2,6 @@ package org.example.Translators.CarrierDatabaseTranslators;
 
 import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 import org.example.ApiRoutes;
-import org.example.Models.CommunicationModels.CarrierModels.Promo;
 import org.example.Models.RequestModels.ApiRequestModels.PurchaseOrderRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.PaginationBaseRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
@@ -14,8 +13,8 @@ import org.example.Translators.CarrierDatabaseTranslators.Interfaces.IPurchaseOr
 import java.util.Collections;
 
 public class PurchaseOrderSubTranslator extends Translator implements IPurchaseOrderSubTranslator {
-    public PurchaseOrderSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public PurchaseOrderSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

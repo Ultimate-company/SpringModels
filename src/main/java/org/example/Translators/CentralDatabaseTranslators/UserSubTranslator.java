@@ -17,8 +17,8 @@ import java.util.List;
 
 public class UserSubTranslator extends Translator implements IUserSubTranslator {
 
-    public UserSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public UserSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

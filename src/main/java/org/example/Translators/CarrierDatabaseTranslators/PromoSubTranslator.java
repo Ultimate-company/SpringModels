@@ -12,8 +12,8 @@ import org.example.Translators.CarrierDatabaseTranslators.Interfaces.IPromoSubTr
 import java.util.Collections;
 
 public class PromoSubTranslator extends Translator implements IPromoSubTranslator {
-    public PromoSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public PromoSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

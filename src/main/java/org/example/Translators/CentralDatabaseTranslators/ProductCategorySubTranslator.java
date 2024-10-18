@@ -14,8 +14,8 @@ import java.net.URLEncoder;
 
 
 public class ProductCategorySubTranslator extends Translator implements IProductCategorySubTranslator {
-    public ProductCategorySubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public ProductCategorySubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

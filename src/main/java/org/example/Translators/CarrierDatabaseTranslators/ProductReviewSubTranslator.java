@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProductReviewSubTranslator extends Translator implements IProductReviewSubTranslator {
-    public ProductReviewSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public ProductReviewSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override
