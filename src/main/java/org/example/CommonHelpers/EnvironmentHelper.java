@@ -11,7 +11,7 @@ public class EnvironmentHelper {
             return reader.readLine().trim();
         } catch (Exception e) {
             e.printStackTrace();
-            return "dev"; // default to dev if there's an issue
+            return "development"; // default to dev if there's an issue
         }
     }
 }

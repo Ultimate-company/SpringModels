@@ -23,7 +23,6 @@ import java.util.Map;
 
 public class Translator
 {
-    private static String API_URL = "";
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Getter
@@ -42,24 +41,24 @@ public class Translator
         Translator.webTemplateId = webTemplateId;
         Translator.carrierId = carrierId;
         Translator.auditUserId = userId;
+    }
+
+    private String getApiUrl(){
         switch(EnvironmentHelper.getCurrentGitBranch()){
             case "development":
-                API_URL = "https://uc-dev-api-821485792142.us-central1.run.app:8080/api";
-                break;
+               return "https://uc-dev-api-821485792142.us-central1.run.app:8080/api";
             case "staging":
-                API_URL = "";
-                break;
+                return "";
             case "uat":
-                API_URL = "";
-                break;
+                return "";
             case "main":
-                API_URL = "";
-                break;
+                return "";
         }
+        return "";
     }
 
     public String getApiUrl(String endpoint) {
-        StringBuilder urlBuilder = new StringBuilder(API_URL).append("/").append(endpoint);
+        StringBuilder urlBuilder = new StringBuilder(getApiUrl()).append("/").append(endpoint);
 
         boolean isFirstQueryParam = true;
 
@@ -87,7 +86,7 @@ public class Translator
     }
 
     public String getApiUrl(String endpoint, Map<String, Object> queryParams) {
-        StringBuilder urlBuilder = new StringBuilder(API_URL).append("/").append(endpoint);
+        StringBuilder urlBuilder = new StringBuilder(getApiUrl()).append("/").append(endpoint);
 
         boolean isFirstQueryParam = true;
 
