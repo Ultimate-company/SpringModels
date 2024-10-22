@@ -11,8 +11,8 @@ import org.example.Translators.CentralDatabaseTranslators.Interfaces.IUserLogSub
 
 public class UserLogSubTranslator extends Translator implements IUserLogSubTranslator {
 
-    public UserLogSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public UserLogSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

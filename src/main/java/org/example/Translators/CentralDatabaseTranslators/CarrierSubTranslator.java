@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class CarrierSubTranslator extends Translator implements ICarrierSubTranslator {
 
-    public CarrierSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public CarrierSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

@@ -11,8 +11,8 @@ import org.example.Translators.CentralDatabaseTranslators.Interfaces.ILoginSubTr
 
 public class LoginSubTranslator extends Translator implements ILoginSubTranslator {
 
-    public LoginSubTranslator() {
-        super(null, null, null);
+    public LoginSubTranslator(String apiUrl) {
+        super(null, null, null, apiUrl);
     }
 
     @Override

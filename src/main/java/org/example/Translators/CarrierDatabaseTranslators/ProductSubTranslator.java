@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductSubTranslator extends Translator implements IProductSubTranslator {
-    public ProductSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public ProductSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
-    public ProductSubTranslator(String token, String wildCard, long webTemplateId, long carrierId, Long userId) {
-        super(token, wildCard, webTemplateId, carrierId, userId);
+    public ProductSubTranslator(String token, String wildCard, long webTemplateId, long carrierId, Long userId, String apiUrl) {
+        super(token, wildCard, webTemplateId, carrierId, userId, apiUrl);
     }
 
     @Override

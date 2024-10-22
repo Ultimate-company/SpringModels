@@ -5,9 +5,7 @@ import org.example.ApiRoutes;
 import org.example.Models.CommunicationModels.CarrierModels.Address;
 import org.example.Models.RequestModels.ApiRequestModels.SalesOrderRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.GetSalesOrdersRequestModel;
-import org.example.Models.RequestModels.GridRequestModels.PaginationBaseRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
-import org.example.Models.ResponseModels.ApiResponseModels.PurchaseOrderResponseModel;
 import org.example.Models.ResponseModels.ApiResponseModels.SalesOrderResponseModel;
 import org.example.Models.ResponseModels.Response;
 import org.example.Translator;
@@ -17,8 +15,8 @@ import java.util.Collections;
 import java.util.Map;
 
 public class SalesOrderSubTranslator extends Translator implements ISalesOrderSubTranslator {
-    public SalesOrderSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public SalesOrderSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
     @Override
     public Response<PaginationBaseResponseModel<SalesOrderResponseModel>> getSalesOrdersInBatches(GetSalesOrdersRequestModel getSalesOrdersRequestModel) {
