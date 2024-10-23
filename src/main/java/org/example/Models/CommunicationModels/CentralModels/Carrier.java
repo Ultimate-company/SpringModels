@@ -30,7 +30,6 @@ public class Carrier {
     private String jiraProjectUrl;
     private String jiraProjectKey;
     private String issueTypes;
-    private String boxDeveloperToken;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String notes;
