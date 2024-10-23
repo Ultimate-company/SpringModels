@@ -1,6 +1,6 @@
 package org.example.CommonHelpers;
 
-import com.google.cloud.storage.*;
+import com.box.sdk.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.util.StringUtils;
 
@@ -12,106 +12,47 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-
 public class ImageHelper {
-    public static final String DevStorageBucket = "ultimate-company.appspot.com";
-    public static final String CurrentEnvironment = "Dev";
+    // Box operations
+    public static String getFileFromBox(String folderName, String fileName, String boxDeveloperToken) throws Exception {
+        BoxAPIConnection api = new BoxAPIConnection(boxDeveloperToken);
 
-    public static void saveBase64ToFirebase(String serviceAccountKeyDirectory, String base64String, String fileName, long carrierId) throws IOException {
-        // Initialize Firebase
-        if(!StringUtils.hasText(base64String)) {
-            return;
-        }
-
-        FileInputStream serviceAccount = new FileInputStream(Path.of(serviceAccountKeyDirectory, "ultimate-company-firebase-adminsdk-jfu71-a9038ba014.json").toString());
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setStorageBucket(DevStorageBucket)
-                .build();
-        if(FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
-        }
-
-        // Decode Base64 string to binary data
-        byte[] data = Base64.getDecoder().decode(base64String);
-
-        // Construct the path in Firebase Storage
-        String path = CurrentEnvironment + "/" + carrierId  + "/" + fileName;
-
-        // Create BlobId and BlobInfo
-        BlobId blobId = BlobId.of(DevStorageBucket, path);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-
-        // Upload the file
-        Storage storage = StorageOptions.getDefaultInstance().getService();
-        storage.create(blobInfo, data);
-    }
-
-    public static void deleteFileFromFirebase(String serviceAccountKeyDirectory, String fileName, long carrierId) throws IOException {
-        // Initialize Firebase
-        if(!StringUtils.hasText(fileName)) {
-            return;
-        }
-
-        FileInputStream serviceAccount = new FileInputStream(Path.of(serviceAccountKeyDirectory, "ultimate-company-firebase-adminsdk-jfu71-a9038ba014.json").toString());
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setStorageBucket(DevStorageBucket)
-                .build();
-        if(FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
-        }
-
-        // Construct the path in Firebase Storage
-        String path = CurrentEnvironment + "/" + carrierId  + "/" + fileName;
-
-        // Create BlobId
-        BlobId blobId = BlobId.of(DevStorageBucket, path);
-
-        // Get a reference to the Storage service
-        Storage storage = StorageOptions.getDefaultInstance().getService();
-
-        // Delete the file
-        storage.delete(blobId);
-    }
-
-    public static String getBase64FromFirebase(String serviceAccountKeyDirectory, String fileName, long carrierId) throws IOException {
-        if(!StringUtils.hasText(fileName)) {
-            return null;
-        }
-
-        FileInputStream serviceAccount = new FileInputStream(Path.of(serviceAccountKeyDirectory, "ultimate-company-firebase-adminsdk-jfu71-a9038ba014.json").toString());
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setStorageBucket(DevStorageBucket)
-                .build();
-        if(FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
-        }
-
-        String path = CurrentEnvironment + "/" + carrierId  + "/" + fileName;
-
-        BlobId blobId = BlobId.of(DevStorageBucket, path);
-        Storage storage = StorageOptions.getDefaultInstance().getService();
-
-        Blob blob = storage.get(blobId);
-
-        if (blob != null) {
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                blob.downloadTo(outputStream);
-                byte[] data = outputStream.toByteArray();
-                return Base64.getEncoder().encodeToString(data);
+        // Get the folder from Box
+        String folderId = "";
+        BoxFolder rootFolder = BoxFolder.getRootFolder(api);
+        for (BoxItem.Info itemInfo : rootFolder.getChildren()) {
+            if(itemInfo.getName().equalsIgnoreCase(folderName)){
+                folderId = itemInfo.getID();
+                break;
             }
-            catch (Exception e) {
-                return null;
-            }
-        } else {
-            return null;
         }
+
+        BoxFolder folder = new BoxFolder(api, folderId);
+        // Iterate through items in the folder to find the file
+        for (BoxItem.Info itemInfo : folder) {
+            if (itemInfo instanceof BoxFile.Info && itemInfo.getName().equals(fileName)) {
+                BoxFile file = (BoxFile) itemInfo.getResource();
+                return file.getID();
+            }
+        }
+
+        throw new Exception("File not found in the folder.");
     }
+
+    public static byte[] downloadImageFromBox(String fileId, String boxDeveloperToken) throws IOException {
+        BoxAPIConnection api = new BoxAPIConnection(boxDeveloperToken);
+        BoxFile file = new BoxFile(api, fileId);
+
+        // Create a ByteArrayOutputStream to capture the image data
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        // Download the image directly to the ByteArrayOutputStream
+        file.download(outputStream);
+
+        // Convert the output stream to a byte array
+        return outputStream.toByteArray();
+    }
+
 
     public static String saveBase64ToFile(String base64String, String directory) throws IOException {
         if(!StringUtils.hasText(base64String)) {
@@ -209,18 +150,6 @@ public class ImageHelper {
         } else {
             return null;
         }
-    }
-
-    public static String getBase64FromByteArray(byte[] image) {
-        if (image == null || image.length == 0) {
-            return null;
-        }
-
-        // Encode the byte array to Base64
-        String base64String = Base64.getEncoder().encodeToString(image);
-
-        // Return the Base64 string with a data URL prefix for PNG images
-        return "data:image/png;base64," + base64String;
     }
 
     public static byte[] getByteArrayFromBase64ImageString(String base64Image) {

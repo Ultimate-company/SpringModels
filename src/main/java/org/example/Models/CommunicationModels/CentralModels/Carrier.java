@@ -15,15 +15,11 @@ public class Carrier {
     private String name;
     private String description;
     private String databaseName;
-    private String awsApikey;
     private String sendgridApikey;
     private String sendgridEmailAddress;
     private boolean isDeleted;
     private String image;
     private String website;
-    private String awsCloudFrontUrl;
-    private String awsBucketName;
-    private String awsSecretKey;
     private String sendgridSenderName;
     private String razorpayApikey;
     private String razorpayApiSecret;
@@ -34,6 +30,7 @@ public class Carrier {
     private String jiraProjectUrl;
     private String jiraProjectKey;
     private String issueTypes;
+    private String boxDeveloperToken;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String notes;
