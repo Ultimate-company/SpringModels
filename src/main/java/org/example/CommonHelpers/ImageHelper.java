@@ -1,9 +1,16 @@
 package org.example.CommonHelpers;
 
-import com.box.sdk.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.util.StringUtils;
 
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.cloud.StorageClient;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,43 +20,33 @@ import java.util.Date;
 import java.util.UUID;
 
 public class ImageHelper {
-    // Box operations
-    public static String getFileFromBox(String folderName, String fileName, String boxDeveloperToken) throws Exception {
-        BoxAPIConnection api = new BoxAPIConnection(boxDeveloperToken);
-
-        // Get the folder from Box
-        String folderId = "";
-        BoxFolder rootFolder = BoxFolder.getRootFolder(api);
-        for (BoxItem.Info itemInfo : rootFolder.getChildren()) {
-            if(itemInfo.getName().equalsIgnoreCase(folderName)){
-                folderId = itemInfo.getID();
-                break;
+    static {
+        try {
+            if(FirebaseApp.getApps() == null || FirebaseApp.getApps().isEmpty()) {
+                FileInputStream serviceAccount = new FileInputStream("src/main/resources/ultimate-company-firebase-adminsdk-jfu71-2edaaefa96.json");
+                FirebaseOptions options = new FirebaseOptions.Builder()
+                        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                        .setStorageBucket("ultimate-company.appspot.com")
+                        .build();
+                FirebaseApp.initializeApp(options);
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        BoxFolder folder = new BoxFolder(api, folderId);
-        // Iterate through items in the folder to find the file
-        for (BoxItem.Info itemInfo : folder) {
-            if (itemInfo instanceof BoxFile.Info && itemInfo.getName().equals(fileName)) {
-                BoxFile file = (BoxFile) itemInfo.getResource();
-                return file.getID();
-            }
-        }
-
-        throw new Exception("File not found in the folder.");
     }
 
-    public static byte[] downloadImageFromBox(String fileId, String boxDeveloperToken) throws IOException {
-        BoxAPIConnection api = new BoxAPIConnection(boxDeveloperToken);
-        BoxFile file = new BoxFile(api, fileId);
+    // Firebase operations
+    public static byte[] downloadFileAsBytesFromFirebase(String filePath) throws IOException {
+        // Get a reference to the Firebase storage bucket
+        Bucket bucket = StorageClient.getInstance().bucket();
 
-        // Create a ByteArrayOutputStream to capture the image data
+        // Get the file (blob) from Firebase Storage
+        Blob blob = bucket.get(filePath);
+
+        // Download the file into a byte array
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        blob.downloadTo(outputStream);
 
-        // Download the image directly to the ByteArrayOutputStream
-        file.download(outputStream);
-
-        // Convert the output stream to a byte array
         return outputStream.toByteArray();
     }
 
