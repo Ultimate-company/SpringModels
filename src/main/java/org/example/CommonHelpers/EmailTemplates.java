@@ -80,13 +80,34 @@ public class EmailTemplates {
         toAddresses.add(email);
         sendEmailRequest.setToAddress(toAddresses);
         sendEmailRequest.setPlainTextContent("Your New password is: " + password);
-        sendEmailRequest.setHtmlContent("<html>" +
-                "<body>" +
-                "<div>" +
-                "<h3> Your new Password is : " + password + " </h3>" +
-                "</div>" +
-                "</body>" +
-                "</html>");
+        String htmlContent = """
+        <html>
+          <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+            <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);'>
+              <header style='text-align: center; padding: 20px 0;'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.98 92.12" style='width: 150px; margin-bottom: 10px;'>
+                  <path d="M6.46 69.53c3.17 2.5 6.37 4.94 10.19 6.36 13.43 5 26 3.14 37.2-5.58A22.62 22.62 0 0 0 62.52 52c.09-15.33 0-30.65 0-46 0-3.81.25-4.16 4-3.33C79 5.47 87.64 14.76 87.88 27.38c.17 8.26.08 16.53 0 24.79a39.38 39.38 0 0 1-31.35 38.47c-10.38 2.29-20.47 2.18-30.31-2.12a44.12 44.12 0 0 1-20-17.6A3.08 3.08 0 0 1 6 70z" fill="#0bf"/>
+                  <path d="M0 23.1V3.46C0 .3.65-.42 3.62.2c12.16 2.55 21.27 11 21.7 24.33.25 7.74.11 15.5 0 23.26-.08 6.65 2.25 12 7.7 16 2 1.44 1.88 2.15-.37 3.16-7.94 3.54-20.48.89-26.83-7.16C1.79 54.67.3 48.77.1 42.48-.1 36 .06 29.56.06 23.1z" fill="#5592ff"/>
+                </svg>
+                <h1 style='color: #333;'>Ultimate Company</h1>
+              </header>
+              <div style='padding: 20px;'>
+                <h3 style='color: #333;'>Your new password is:</h3>
+                <p style='font-size: 18px; font-weight: bold; color: #555;'>""" + password + """
+                </p>
+                <p style='color: #777; margin-top: 20px;'>For your security, please change this password after logging in.</p>
+                <p style='color: #777;'>If you did not request a new password, please contact our support team immediately.</p>
+              </div>
+              <footer style='text-align: center; padding: 10px 0; background-color: #333; color: white; border-top: 1px solid #ddd;'>
+                <p>&copy; """ + java.time.Year.now() + """ 
+                Ultimate Company. All rights reserved.</p>
+                <p>Mumbai Maharashtra</p>
+              </footer>
+            </div>
+          </body>
+        </html>""";
+
+        sendEmailRequest.setHtmlContent(htmlContent);
 
         // Send the reset password email using the email helper
         return emailHelper.sendEmail(sendEmailRequest);
