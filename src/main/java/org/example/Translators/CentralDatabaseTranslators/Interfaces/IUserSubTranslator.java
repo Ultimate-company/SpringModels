@@ -6,8 +6,10 @@ import org.example.Models.RequestModels.ApiRequestModels.ImportUsersRequestModel
 import org.example.Models.RequestModels.ApiRequestModels.UsersRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.GetUsersRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
+import org.example.Models.ResponseModels.ApiResponseModels.UserResponseModel;
 import org.example.Models.ResponseModels.Response;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IUserSubTranslator {
@@ -30,14 +32,14 @@ public interface IUserSubTranslator {
      * @param id The ID of the user.
      * @return Response containing the user information.
      */
-    Response<User> getUserById(long id);
+    Response<UserResponseModel> getUserById(long id) throws IOException;
 
     /**
      * Creates a new user.
      * @param usersRequestModel The request model containing user information.
      * @return Response containing the ID of the created user.
      */
-    Response<Long> createUser(UsersRequestModel usersRequestModel);
+    Response<Long> createUser(UsersRequestModel usersRequestModel) throws Exception;
 
     /**
      * Toggles the status of a user (active/inactive).
@@ -51,7 +53,7 @@ public interface IUserSubTranslator {
      * @param usersRequestModel The request model containing updated user information.
      * @return Response indicating the success of the update operation.
      */
-    Response<Long> updateUser(UsersRequestModel usersRequestModel);
+    Response<Long> updateUser(UsersRequestModel usersRequestModel) throws Exception;
 
     /**
      * Fetches users in a carrier.

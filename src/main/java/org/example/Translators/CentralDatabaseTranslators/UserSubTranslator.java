@@ -8,6 +8,7 @@ import org.example.Models.RequestModels.ApiRequestModels.ImportUsersRequestModel
 import org.example.Models.RequestModels.ApiRequestModels.UsersRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.GetUsersRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
+import org.example.Models.ResponseModels.ApiResponseModels.UserResponseModel;
 import org.example.Models.ResponseModels.Response;
 import org.example.Translator;
 import org.example.Translators.CentralDatabaseTranslators.Interfaces.IUserSubTranslator;
@@ -40,11 +41,11 @@ public class UserSubTranslator extends Translator implements IUserSubTranslator 
     }
 
     @Override
-    public Response<User> getUserById(long id) {
+    public Response<UserResponseModel> getUserById(long id) {
         return httpResponse(getApiUrl(ApiRoutes.ApiControllerNames.USER + "/" + ApiRoutes.UsersSubRoute.GET_USER_BY_ID,
                         Collections.singletonMap("id", id)),
                 "GET",
-                new TypeToken<Response<User>>(){}.getType(),
+                new TypeToken<Response<UserResponseModel>>(){}.getType(),
                 null);
     }
 

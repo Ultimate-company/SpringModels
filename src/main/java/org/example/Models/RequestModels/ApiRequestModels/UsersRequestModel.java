@@ -18,4 +18,5 @@ public class UsersRequestModel extends BaseRequest
     private Address address;
     private Permissions permissions;
     private List<Long> userGroupIds;
+    private String profilePictureBase64;
 }

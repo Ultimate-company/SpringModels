@@ -5,7 +5,9 @@
 /node_modules/
 
 # Ignore generated
-/src/main/frontend
+/src/main/frontend/
 
-#ignore the class targets
+**/generated/
+/src/main/frontend/
+/src/main/frontend
 /target

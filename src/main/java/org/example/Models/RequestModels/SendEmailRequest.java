@@ -1,5 +1,6 @@
 package org.example.Models.RequestModels;
 
+import com.sendgrid.helpers.mail.objects.Attachments;
 import com.sendgrid.helpers.mail.objects.Email;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,8 @@ public class SendEmailRequest {
     private LocalDateTime meetingDate;
     private String location;
     private List<String> attendees;
+    private List<Attachments> attachments;
+
 
     /**
      * Retrieves a list of Email objects for the "To" recipients in SendGrid.

@@ -6,6 +6,7 @@ import org.example.Models.CommunicationModels.CentralModels.Carrier;
 import org.example.Models.CommunicationModels.CentralModels.WebTemplateCarrierMapping;
 import org.example.Models.RequestModels.GridRequestModels.GetCarriersRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.CarrierByWebTemplateWildCardResponse;
+import org.example.Models.ResponseModels.ApiResponseModels.GetCarrierResponseModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
 import org.example.Models.ResponseModels.Response;
 import org.example.Translator;
@@ -22,7 +23,7 @@ public class CarrierSubTranslator extends Translator implements ICarrierSubTrans
     }
 
     @Override
-    public Response<Carrier> getCarrierDetailsById(long carrierId) {
+    public Response<GetCarrierResponseModel> getCarrierDetailsById(long carrierId) {
         Map<String, Object> params = new HashMap<>();
         params.put("CarrierId", carrierId);
         params.put("carrierId", carrierId);
@@ -30,7 +31,7 @@ public class CarrierSubTranslator extends Translator implements ICarrierSubTrans
         return httpResponse(getApiUrl(ApiRoutes.ApiControllerNames.CARRIER + "/" + ApiRoutes.CarriersSubRoute.GET_CARRIER_DETAILS_BY_ID,
                         params),
                 "GET",
-                new TypeToken<Response<Carrier>>(){}.getType(),
+                new TypeToken<Response<GetCarrierResponseModel>>(){}.getType(),
                 null);
     }
 
