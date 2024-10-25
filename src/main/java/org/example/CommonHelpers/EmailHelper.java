@@ -85,6 +85,19 @@ public class EmailHelper {
         mail.addContent(new Content("text/plain", request.getPlainTextContent()));
         mail.addContent(new Content("text/html", request.getHtmlContent()));
 
+        // Attach any files if present
+        if (request.getAttachments() != null) {
+            for (Attachments attachment : request.getAttachments()) {
+                Attachments calendarAttachment = new Attachments();
+                calendarAttachment.setFilename(attachment.getFilename());
+                calendarAttachment.setContent(attachment.getContent());
+                calendarAttachment.setType(attachment.getType());
+                calendarAttachment.setDisposition(attachment.getDisposition());
+                calendarAttachment.setContentId(attachment.getContentId()); // Use content ID for inline images
+                mail.addAttachments(calendarAttachment);
+            }
+        }
+
         if (request.getSendAt() != null) {
             mail.setSendAt(request.getSendAt().toEpochSecond(ZoneOffset.UTC));
 

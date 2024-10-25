@@ -19,11 +19,8 @@ public class Carrier {
     private String sendgridApikey;
     private String sendgridEmailAddress;
     private boolean isDeleted;
-    private String image;
     private String website;
-    private String awsCloudFrontUrl;
-    private String awsBucketName;
-    private String awsSecretKey;
+    private String supportEmail;
     private String sendgridSenderName;
     private String razorpayApikey;
     private String razorpayApiSecret;
@@ -38,6 +35,7 @@ public class Carrier {
     private LocalDateTime updatedAt;
     private String notes;
     private Long auditUserId;
+    private long googleCredId;
 
     @IgnoreCopy
     private String imageBase64;

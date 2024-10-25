@@ -15,4 +15,5 @@ public class UserResponseModel {
     private Address address;
     private Permissions permissions;
     private List<Long> groupIds;
+    private String profilePictureBase64;
 }

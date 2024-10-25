@@ -243,6 +243,7 @@ public class ApiRoutes {
         public static final String GET_LOGGED_IN_USER = "getLoggedInUser";
         public static final String SET_INCLUDE_DELETED = "setIncludeDeleted";
         public static final String GET_INCLUDE_DELETED = "getIncludeDeleted";
+        public static final String GET_PROFILE_IMAGE = "getProfileImage";
 
         // Api + frontend Endpoints
         public static final String GET_USER_PERMISSIONS_BY_ID = "getUserPermissionsById";

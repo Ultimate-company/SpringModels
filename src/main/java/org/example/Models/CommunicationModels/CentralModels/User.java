@@ -23,7 +23,6 @@ public class User {
     private boolean locked;
     private boolean emailConfirmed;
     private String token;
-    private String avatar;
     private Date dob;
     private boolean guest;
     private int lockedAttempts;

@@ -4,6 +4,7 @@ import org.example.Models.CommunicationModels.CentralModels.Carrier;
 import org.example.Models.CommunicationModels.CentralModels.WebTemplateCarrierMapping;
 import org.example.Models.RequestModels.GridRequestModels.GetCarriersRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.CarrierByWebTemplateWildCardResponse;
+import org.example.Models.ResponseModels.ApiResponseModels.GetCarrierResponseModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
 import org.example.Models.ResponseModels.Response;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public interface ICarrierSubTranslator {
      * Requires a valid authorization token.
      * @return Response containing carrier data if successful, otherwise error details.
      */
-    Response<Carrier> getCarrierDetailsById(long carrierId);
+    Response<GetCarrierResponseModel> getCarrierDetailsById(long carrierId);
 
     /**
      * @summary Checks if a user is mapped to a specific carrier.
