@@ -2,7 +2,6 @@ package org.example.Translators.CarrierDatabaseTranslators;
 
 import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 import org.example.ApiRoutes;
-import org.example.Models.CommunicationModels.CarrierModels.Message;
 import org.example.Models.RequestModels.ApiRequestModels.MessageRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.PaginationBaseRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.MessageResponseModel;
@@ -17,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MessageSubTranslator extends Translator implements IMessageSubTranslator {
-    public MessageSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public MessageSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

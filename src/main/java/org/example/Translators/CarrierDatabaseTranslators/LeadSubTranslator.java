@@ -13,8 +13,8 @@ import org.example.Translators.CarrierDatabaseTranslators.Interfaces.ILeadSubTra
 import java.util.Collections;
 
 public class LeadSubTranslator extends Translator implements ILeadSubTranslator {
-    public LeadSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public LeadSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

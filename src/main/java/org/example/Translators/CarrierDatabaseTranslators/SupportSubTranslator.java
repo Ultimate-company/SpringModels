@@ -8,15 +8,13 @@ import org.example.Models.ResponseModels.Response;
 import org.example.Translator;
 import org.example.Translators.CarrierDatabaseTranslators.Interfaces.ISupportSubTranslator;
 
-import javax.annotation.processing.SupportedOptions;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SupportSubTranslator extends Translator implements ISupportSubTranslator {
-    public SupportSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public SupportSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

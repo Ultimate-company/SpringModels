@@ -15,7 +15,6 @@ public class Carrier {
     private String name;
     private String description;
     private String databaseName;
-    private String awsApikey;
     private String sendgridApikey;
     private String sendgridEmailAddress;
     private boolean isDeleted;

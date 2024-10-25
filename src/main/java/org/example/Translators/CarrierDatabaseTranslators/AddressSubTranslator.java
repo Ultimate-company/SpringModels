@@ -10,8 +10,8 @@ import org.example.Translators.CarrierDatabaseTranslators.Interfaces.IAddressSub
 import java.util.Collections;
 
 public class AddressSubTranslator extends Translator implements IAddressSubTranslator {
-    public AddressSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public AddressSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override

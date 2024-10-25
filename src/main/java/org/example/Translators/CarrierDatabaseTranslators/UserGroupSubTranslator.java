@@ -2,7 +2,6 @@ package org.example.Translators.CarrierDatabaseTranslators;
 
 import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 import org.example.ApiRoutes;
-import org.example.Models.CommunicationModels.CarrierModels.UserGroup;
 import org.example.Models.RequestModels.ApiRequestModels.UserGroupRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.PaginationBaseRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
@@ -15,8 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class UserGroupSubTranslator extends Translator implements IUserGroupSubTranslator {
-    public UserGroupSubTranslator(String token, Long auditUserId, Long carrierId) {
-        super(token, auditUserId, carrierId);
+    public UserGroupSubTranslator(String token, Long auditUserId, Long carrierId, String apiUrl) {
+        super(token, auditUserId, carrierId, apiUrl);
     }
 
     @Override
