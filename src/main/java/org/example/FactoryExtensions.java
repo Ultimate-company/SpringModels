@@ -33,6 +33,7 @@ public class FactoryExtensions
     private IPackageSubTranslator packageSubTranslator;
     private ISupportSubTranslator supportSubTranslator;
     private IWebTemplateSubTranslator webTemplateSubTranslator;
+    private IGridSubTranslator gridSubTranslator;
 
     public FactoryExtensions(String token, Long userId, Long carrierId, String apiUrl)
     {
@@ -59,6 +60,7 @@ public class FactoryExtensions
             setPackageSubTranslator(new PackageSubTranslator(token, userId, carrierId, apiUrl));
             setSupportSubTranslator(new SupportSubTranslator(token, userId, carrierId, apiUrl));
             setWebTemplateSubTranslator(new WebTemplateSubTranslator(token, userId, carrierId, apiUrl));
+            setGridSubTranslator(new GridSubTranslator(token, userId, carrierId, apiUrl));
         }
         else if(userId != null) {
             setCarrierSubTranslator(new CarrierSubTranslator(token, userId, null, apiUrl));
