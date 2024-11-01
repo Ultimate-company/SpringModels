@@ -10,7 +10,8 @@ public class JsonResponse<T> {
         Success,
         Error,
         Warning,
-        Redirect
+        Redirect,
+        NoMessage
     }
 
     private JsonType responseType;

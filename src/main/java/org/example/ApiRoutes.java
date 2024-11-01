@@ -17,6 +17,8 @@ public class ApiRoutes {
         public static final String PROMO = "Promo";
         public static final String USER_CART = "UserCart";
         public static final String USER = "User";
+        public static final String BULK = "Bulk";
+        public static final String GRID = "Grid";
         public static final String USERLOG = "UserLog";
         public static final String LOGIN = "Login";
         public static final String EVENTS = "Events";
@@ -235,6 +237,13 @@ public class ApiRoutes {
 
     public static class UserLogSubRoute {
         public static final String GET_USER_LOGS_IN_BATCHES_BY_USERID = "getUserLogsInBatchesByUserId";
+    }
+
+    public static class GridSubRoute {
+        public static final String UPDATE_GRID_VISIBILITY_PREFERENCE = "updateGridVisibilityPreference";
+        public static final String UPDATE_GRID_DENSITY_PREFERENCE = "updateGridDensityVisibilityPreference";
+        public static final String UPDATE_ROWS_PER_PAGE_PREFERENCE = "updateRowsPerPagePreference";
+        public static final String GET_GRID_VISIBILITY_PREFERENCE = "getGridVisibilityPreference";
     }
 
     public static class UsersSubRoute {
