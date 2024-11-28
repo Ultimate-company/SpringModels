@@ -15,4 +15,5 @@ public class ProductCategory {
     private LocalDateTime updatedAt;
     private String notes;
     private Long auditUserId;
+    private boolean end;
 }

@@ -25,4 +25,15 @@ public interface IProductCategorySubTranslator {
      * @return A response containing the product category.
      */
     Response<ProductCategory> getCategoryByName(String name);
+
+    /**
+     * Retrieve a list of product categories that do not have any children.
+     *
+     * This method identifies product categories whose `id` does not appear as a
+     * `parentId` in any other product category, effectively finding all leaf or standalone
+     * categories in the hierarchy.
+     *
+     * @return A response containing a list of product categories without children.
+     */
+    Response<List<ProductCategory>> findCategoriesWithoutChildren();
 }

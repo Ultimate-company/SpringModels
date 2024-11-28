@@ -41,7 +41,7 @@ public class FirebaseHelper {
                 FirebaseApp.initializeApp(options);
             }
         }
-        catch (Exception ex) {
+        catch (Exception ignored) {
 
         }
     }

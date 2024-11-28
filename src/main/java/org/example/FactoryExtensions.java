@@ -2,10 +2,12 @@ package org.example;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.Translators.BulkSubTranslator;
 import org.example.Translators.CarrierDatabaseTranslators.*;
 import org.example.Translators.CarrierDatabaseTranslators.Interfaces.*;
 import org.example.Translators.CentralDatabaseTranslators.*;
 import org.example.Translators.CentralDatabaseTranslators.Interfaces.*;
+import org.example.Translators.Interface.IBulkSubTranslator;
 
 @Getter
 @Setter
@@ -34,6 +36,7 @@ public class FactoryExtensions
     private ISupportSubTranslator supportSubTranslator;
     private IWebTemplateSubTranslator webTemplateSubTranslator;
     private IGridSubTranslator gridSubTranslator;
+    private IBulkSubTranslator bulkSubTranslator;
 
     public FactoryExtensions(String token, Long userId, Long carrierId, String apiUrl)
     {
@@ -61,6 +64,7 @@ public class FactoryExtensions
             setSupportSubTranslator(new SupportSubTranslator(token, userId, carrierId, apiUrl));
             setWebTemplateSubTranslator(new WebTemplateSubTranslator(token, userId, carrierId, apiUrl));
             setGridSubTranslator(new GridSubTranslator(token, userId, carrierId, apiUrl));
+            setBulkSubTranslator(new BulkSubTranslator(token, userId, carrierId, apiUrl));
         }
         else if(userId != null) {
             setCarrierSubTranslator(new CarrierSubTranslator(token, userId, null, apiUrl));

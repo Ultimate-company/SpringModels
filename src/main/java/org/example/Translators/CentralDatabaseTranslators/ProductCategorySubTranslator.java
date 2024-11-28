@@ -43,4 +43,12 @@ public class ProductCategorySubTranslator extends Translator implements IProduct
                 new TypeToken<Response<ProductCategory>>(){}.getType(),
                 null);
     }
+
+    @Override
+    public Response<List<ProductCategory>> findCategoriesWithoutChildren() {
+        return httpResponse(getApiUrl(ApiRoutes.ApiControllerNames.PRODUCT_CATEGORY + "/" + ApiRoutes.ProductCategorySubRoute.FIND_CATEGORIES_WITHOUT_CHILDREN),
+                "GET",
+                new TypeToken<Response<List<ProductCategory>>>(){}.getType(),
+                null);
+    }
 }

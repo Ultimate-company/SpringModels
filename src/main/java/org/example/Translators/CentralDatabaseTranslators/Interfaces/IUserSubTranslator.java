@@ -71,13 +71,6 @@ public interface IUserSubTranslator {
 
     /**
      * Imports users into the system.
-     * @param importUsersRequestModel The request model containing users to import.
-     * @return Response indicating the result of the import operation.
-     */
-    Response<String> importUsers(ImportUsersRequestModel importUsersRequestModel) throws Exception;
-
-    /**
-     * Imports users into the system.
      * @param id The id of the user of which the permissions are to be fetch.
      * @return Response with the permissions object.
      */

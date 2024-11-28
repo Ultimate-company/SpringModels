@@ -2,26 +2,46 @@ package org.example.Models.CommunicationModels.CarrierModels;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.example.Annotations.FrontEndVariable;
+import org.example.Annotations.IsRequired;
+
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 public class PurchaseOrder {
     private Long purchaseOrderId;
+
+    @FrontEndVariable
+    @IsRequired
     private LocalDateTime expectedShipmentDate;
+
+    @FrontEndVariable
+    @IsRequired
     private String vendorNumber;
     private boolean deleted;
+
+    @FrontEndVariable
     private String termsConditionsHtml;
-    private String termsConditionsMarkdown;
+
+    @FrontEndVariable
     private String orderReceipt;
     private boolean approved;
-    private Long salesOrderId;
+
+    @FrontEndVariable
     private Long approvedByUserId;
-    private Long assignedLeadId;
+
+    @FrontEndVariable
+    @IsRequired
+    private long assignedLeadId;
     private Long createdByUserId;
     private Long purchaseOrderAddressId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @FrontEndVariable
     private String notes;
     private Long auditUserId;
 }
