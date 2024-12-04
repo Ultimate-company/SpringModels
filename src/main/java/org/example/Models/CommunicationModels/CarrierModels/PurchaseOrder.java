@@ -24,6 +24,7 @@ public class PurchaseOrder {
     private boolean deleted;
 
     @FrontEndVariable
+    @IsRequired
     private String termsConditionsHtml;
 
     @FrontEndVariable

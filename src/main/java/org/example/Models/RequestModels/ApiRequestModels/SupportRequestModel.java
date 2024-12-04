@@ -13,12 +13,7 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 public class SupportRequestModel {
-    @FrontEndVariable
-    @IsRequired
     private String jsonContent;
-
-    @FrontEndVariable
-    @IsRequired
     private Map<String, String> imagesBase64;
     private JSONDocNode jsonDocNode;
 

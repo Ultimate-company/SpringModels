@@ -48,6 +48,7 @@ public class Lead {
     private String phone;
 
     @FrontEndVariable
+    @IsRequired
     private String title;
 
     @FrontEndVariable

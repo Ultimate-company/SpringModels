@@ -66,6 +66,28 @@ public class FirebaseHelper {
         return outputStream.toByteArray();
     }
 
+    public String downloadFileAsBase64FromFirebase(String filePath) {
+        // Get a reference to the Firebase storage bucket
+        Bucket bucket = StorageClient.getInstance().bucket();
+
+        // Get the file (blob) from Firebase Storage
+        Blob blob = bucket.get(filePath);
+
+        // Check if the blob exists
+        if (blob == null) {
+            // Return null if the file does not exist
+            return null;
+        }
+
+        // Download the file into a byte array
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        blob.downloadTo(outputStream);
+
+        // Encode the byte array to Base64
+        byte[] fileBytes = outputStream.toByteArray();
+        return Base64.getEncoder().encodeToString(fileBytes); // Return the Base64 string
+    }
+
     public boolean uploadFileToFirebase(String imageBase64, String filePath) {
         try {
             // Get Firebase bucket instance

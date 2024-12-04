@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.nimbusds.jose.shaded.gson.Gson;
@@ -24,6 +25,10 @@ import org.example.Adapters.DateAdapter;
 import org.example.Adapters.LocalDateTimeAdapter;
 import org.example.Annotations.FrontEndVariable;
 import org.example.Annotations.IsRequired;
+import org.springframework.asm.ClassReader;
+import org.springframework.asm.ClassVisitor;
+import org.springframework.asm.FieldVisitor;
+import org.springframework.asm.Opcodes;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -106,7 +111,7 @@ public class ExcelHelper {
         }
         return data; // Return the mapped data
     }
-    private static Object parseValue(Class<?> fieldType, String value, boolean isImage) throws Exception {
+    private static Object parseValue(Class<?> fieldType, String value, String signature, boolean isImage) throws Exception {
         if(value == null) {
             return null;
         }
@@ -128,7 +133,9 @@ public class ExcelHelper {
             return (long) Double.parseDouble(value);
         }
         else if (fieldType == boolean.class || fieldType == Boolean.class) {
-            return Boolean.parseBoolean(value);
+            if(value.equalsIgnoreCase("Yes")) return true;
+            else if(value.equalsIgnoreCase("No")) return false;
+            else return Boolean.parseBoolean(value);
         }
         else if (fieldType == Date.class) {
             return new SimpleDateFormat("yyyy-MM-dd").parse(value);
@@ -173,15 +180,35 @@ public class ExcelHelper {
             return stringList;
         }
         else if(fieldType == Map.class) {
+            Map<?, ?> map;
             ObjectMapper objectMapper = new ObjectMapper();
+            map = switch (signature) {
+                case "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;" ->
+                        objectMapper.readValue(value, new TypeReference<Map<String, String>>() {
+                        });
+                case "Ljava/util/Map<Ljava/lang/String;Ljava/util/List<Ljava/lang/String;>;>;" ->
+                        objectMapper.readValue(value, new TypeReference<Map<String, List<String>>>() {
+                        });
+                case "Ljava/util/Map<Ljava/lang/String;Ljava/util/List<Ljava/lang/Long;>;>;" ->
+                        objectMapper.readValue(value, new TypeReference<Map<String, List<Long>>>() {
+                        });
+                case "Ljava/util/Map<Ljava/lang/Long;Ljava/lang/Long;>;" ->
+                        objectMapper.readValue(value, new TypeReference<Map<Long, Long>>() {
+                        });
+                case "Ljava/util/Map<Ljava/lang/Long;Ljava/util/List<Ljava/lang/Long;>;>;" ->
+                        objectMapper.readValue(value, new TypeReference<Map<Long, List<Long>>>() {
+                        });
+                case "Ljava/util/Map<Ljava/lang/Long;Ljava/util/List<Ljava/lang/String;>;>;" ->
+                        objectMapper.readValue(value, new TypeReference<Map<Long, List<String>>>() {
+                        });
+                case "Ljava/util/Map<Ljava/lang/Long;Ljava/lang/Integer;>;" ->
+                        objectMapper.readValue(value.replaceAll("(\\d+):", "\"$1\":"), new TypeReference<Map<Long, Integer>>() {});
+                default ->
+                    // Handle unknown signatures, e.g., throw an exception or log a warning
+                        throw new IllegalArgumentException("Unsupported signature: " + signature);
+            };
 
-            // Use reflection to determine generic key and value types if available
-            ParameterizedType parameterizedType = (ParameterizedType) fieldType.getGenericSuperclass();
-            Class<?> keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-            Class<?> valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
-
-            // Construct the type reference dynamically for Map<keyType, valueType>
-            return objectMapper.readValue(value, TypeFactory.defaultInstance().constructMapType(Map.class, keyType, valueType));
+            return map;
         }
 
         return null;
@@ -204,6 +231,29 @@ public class ExcelHelper {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static String getFieldSignature(String className, String fieldName) throws IOException {
+        // Array to hold the signature
+        final String[] fieldSignature = new String[1];
+
+        // Load the class using ASM
+        String classPath = className.replace('.', '/');
+        ClassReader classReader = new ClassReader(classPath);
+
+        // Visit the class to extract field signature
+        classReader.accept(new ClassVisitor(Opcodes.ASM9) {
+            @Override
+            public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
+                if (name.equals(fieldName)) { // Check if it's the field we're interested in
+                    fieldSignature[0] = signature != null ? signature : descriptor;
+                }
+                return super.visitField(access, name, descriptor, signature, value);
+            }
+        }, 0);
+
+        // Return the extracted signature
+        return fieldSignature[0];
     }
     //
 
@@ -249,6 +299,7 @@ public class ExcelHelper {
                         field.set(obj,
                                 parseValue(field.getType(),
                                         row.get(keyValue),
+                                        getFieldSignature(field.getDeclaringClass().getName(), field.getName()),
                                         imageFieldColumns.contains(field.getName())));
                     }
                 }
@@ -269,6 +320,7 @@ public class ExcelHelper {
                                 customField.set(nestedObj,
                                         parseValue(customField.getType(),
                                                 row.get(keyValue),
+                                                getFieldSignature(field.getDeclaringClass().getName(), field.getName()),
                                                 imageFieldColumns.contains(customField.getName())));
                             }
                         }

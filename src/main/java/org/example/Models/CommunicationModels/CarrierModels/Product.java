@@ -157,6 +157,7 @@ public class Product {
     private Double weightKgs;
     private long categoryId;
 
+    @IgnoreCopy
     @FrontEndVariable
     @IsRequired
     private String category;

@@ -16,10 +16,16 @@
     </properties>
 
     <dependencies>
+        <!-- Flying Saucer (OpenPDF) -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.17.2</version>
+        </dependency>
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
-            <artifactId>flying-saucer-pdf-itext5</artifactId>
-            <version>9.1.22</version>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.11.2</version>
         </dependency>
         <dependency>
             <groupId>com.sendgrid</groupId>
