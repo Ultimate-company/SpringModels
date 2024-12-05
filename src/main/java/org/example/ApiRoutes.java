@@ -190,15 +190,14 @@ public class ApiRoutes {
         public static final String GET_ROOT_CATEGORIES = "getRootCategories";
         public static final String GET_CHILD_CATEGORIES_GIVEN_PARENT_ID = "getChildCategoriesGivenParentId";
         public static final String GET_CATEGORY_BY_NAME = "getCategoryByName";
+        public static final String FIND_CATEGORIES_WITHOUT_CHILDREN = "findCategoriesWithoutChildren";
     }
 
     public static class ProductsSubRoute {
         // purely frontend endpoints
         public static final String SET_INCLUDE_DELETED = "setIncludeDeleted";
         public static final String GET_INCLUDE_DELETED = "getIncludeDeleted";
-        public static final String SET_PRODUCT_CATEGORY = "setProductCategory";
         public static final String GET_PRODUCT_CATEGORIES = "getProductCategories";
-        public static final String GET_COLORS = "getColors";
         public static final String GET_STATIC_IMAGE = "getStaticImage";
         public static final String GET_PRODUCT_IMAGE = "getProductImage";
 
@@ -253,6 +252,7 @@ public class ApiRoutes {
         public static final String SET_INCLUDE_DELETED = "setIncludeDeleted";
         public static final String GET_INCLUDE_DELETED = "getIncludeDeleted";
         public static final String GET_PROFILE_IMAGE = "getProfileImage";
+        public static final String BULK_CREATE_USER = "bulkCreateUser";
 
         // Api + frontend Endpoints
         public static final String GET_USER_PERMISSIONS_BY_ID = "getUserPermissionsById";
@@ -265,7 +265,6 @@ public class ApiRoutes {
         public static final String FETCH_USERS_IN_CARRIER = "fetchUsersInCarrier";
         public static final String GET_USER_BY_EMAIL = "getUserByEmail";
         public static final String GET_USER_BY_ID = "getUserById";
-        public static final String IMPORT_USERS = "importUsers";
         public static final String GOOGLE_SIGN_IN = "googleSignIn";
         public static final String GET_USERS_IN_CARRIER_IN_BATCHES = "getUsersInCarrierInBatches";
         public static final String UPDATE_LOCKED_ATTEMPTS = "updateLockedAttempts";
@@ -375,6 +374,7 @@ public class ApiRoutes {
 
     public static class DataSubRoute {
         // purely frontend endpoints
+        public static final String GET_COLORS = "getColors";
         public static final String GET_STATES = "getStates";
         public static final String GET_ROLES = "getRoles";
         public static final String GET_LEAD_STATUSES = "getLeadStatuses";
@@ -383,5 +383,11 @@ public class ApiRoutes {
         public static final String GET_SORT_OPTIONS = "getSortOptions";
         public static final String GET_STATE_CITY_MAPPING = "getStateCityMappingOptions";
         public static final String GET_FONT_STYLES = "getFontStyles";
+        public static final String FIND_CATEGORIES_WITHOUT_CHILDREN = "findCategoriesWithoutChildren";
+    }
+
+    public static class BulkSubRoute {
+        public static final String BULK_INSERT = "bulkInsert";
+        public static final String GENERATE_BULK_IMPORT_EXCEL = "generateBulkImportExcel";
     }
 }

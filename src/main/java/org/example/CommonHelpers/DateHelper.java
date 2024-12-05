@@ -19,16 +19,16 @@ public class DateHelper {
     }
 
     public static boolean isDateLessThanCurrentUTC(Date dateToCheck) {
-        // Get the current UTC date
+        // Get the current UTC date and time
         Calendar currentCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        currentCalendar.setTime(dateToCheck);
-        resetTime(currentCalendar);
+        currentCalendar.setTime(new Date());  // Get current time in UTC
+        resetTime(currentCalendar);  // Reset the time to 00:00:00 UTC
         Date currentUTCDate = currentCalendar.getTime();
 
         // Reset time part for the input date
         Calendar dateCalendar = Calendar.getInstance();
         dateCalendar.setTime(dateToCheck);
-        resetTime(dateCalendar);
+        resetTime(dateCalendar);  // Reset the time of the input date
         Date inputDate = dateCalendar.getTime();
 
         // Compare the dates

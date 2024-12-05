@@ -1,11 +1,9 @@
 package org.example.Translators.CarrierDatabaseTranslators.Interfaces;
 
-import com.itextpdf.text.DocumentException;
 import freemarker.template.TemplateException;
 import org.example.Models.CommunicationModels.CarrierModels.Address;
 import org.example.Models.RequestModels.ApiRequestModels.SalesOrderRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.GetSalesOrdersRequestModel;
-import org.example.Models.RequestModels.GridRequestModels.PaginationBaseRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
 import org.example.Models.ResponseModels.ApiResponseModels.SalesOrderResponseModel;
 import org.example.Models.ResponseModels.Response;
@@ -59,7 +57,7 @@ public interface ISalesOrderSubTranslator {
      * @param salesOrderId The ID of the Sales Order to be fetched.
      * @return A Response object containing a boolean indicating the success of the toggle operation.
      */
-    Response<byte[]> getSalesOrderPDF(long salesOrderId) throws TemplateException, IOException, DocumentException;
+    Response<String> getSalesOrderPDF(long salesOrderId) throws TemplateException, IOException;
 
 
     /**

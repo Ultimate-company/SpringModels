@@ -92,14 +92,6 @@ public class UserSubTranslator extends Translator implements IUserSubTranslator 
     }
 
     @Override
-    public Response<String> importUsers(ImportUsersRequestModel importUsersRequestModel) {
-        return httpResponse(getApiUrl(ApiRoutes.ApiControllerNames.USER + "/" + ApiRoutes.UsersSubRoute.IMPORT_USERS),
-                "POST",
-                new TypeToken<Response<String>>(){}.getType(),
-                importUsersRequestModel);
-    }
-
-    @Override
     public Response<Permissions> getUserPermissionsById(long id) {
         return httpResponse(getApiUrl(ApiRoutes.ApiControllerNames.USER + "/" + ApiRoutes.UsersSubRoute.GET_USER_PERMISSIONS_BY_ID,
                     Collections.singletonMap("id", id)),

@@ -1,6 +1,5 @@
 package org.example.Translators.CarrierDatabaseTranslators.Interfaces;
 
-import com.itextpdf.text.DocumentException;
 import freemarker.template.TemplateException;
 import org.example.Models.RequestModels.ApiRequestModels.PurchaseOrderRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.PaginationBaseRequestModel;
@@ -65,5 +64,5 @@ public interface IPurchaseOrderSubTranslator {
      * @param purchaseOrderId The ID of the purcahse Order to be fetched.
      * @return A Response object containing a boolean indicating the success of the toggle operation.
      */
-    Response<String> getPurchaseOrderPDF(long purchaseOrderId) throws TemplateException, IOException, DocumentException;
+    Response<String> getPurchaseOrderPDF(long purchaseOrderId) throws TemplateException, IOException;
 }

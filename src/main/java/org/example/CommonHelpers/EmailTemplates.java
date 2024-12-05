@@ -11,18 +11,147 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import static org.example.CommonHelpers.ExcelHelper.generateExcelFileForBulkImportErrors;
 
 public class EmailTemplates {
     private final EmailHelper emailHelper;
-    public EmailTemplates(String senderName, String fromAddress, String sendgridApiKey) {
+    private final Environment environment;
+    private final Carrier carrier;
+    private final GoogleCred googleCred;
+
+    public EmailTemplates(String senderName,
+                          String fromAddress,
+                          String sendgridApiKey,
+                          Environment environment,
+                          Carrier carrier,
+                          GoogleCred googleCred) {
+        this.environment = environment;
+        this.carrier = carrier;
+        this.googleCred = googleCred;
         this.emailHelper = new EmailHelper(fromAddress, senderName, sendgridApiKey);
     }
 
+    public Response<Boolean> sendImportBulkDataResults(
+            String importType,
+            Map<String, String> errors,
+            int totalDataCountToBeImported,
+            String userEmail) throws Exception {
+
+        String status;
+        if (errors == null || errors.isEmpty()) {
+            status = "Import of " + importType + " was successful, with no errors reported.";
+        } else if (errors.size() < totalDataCountToBeImported) {
+            status = "Import of " + importType + " was partially successful.";
+        } else {
+            status = "Import of " + importType + " failed.";
+        }
+
+        StringBuilder tableRows = new StringBuilder();
+        int srNo = 1;
+        if (errors != null && !errors.isEmpty()) {
+            for (Map.Entry<String, String> entry : errors.entrySet()) {
+                tableRows.append(String.format(
+                        "<tr><td style='border: 1px solid #ddd; padding: 8px;'>%d</td><td style='border: 1px solid #ddd; padding: 8px;'>%s</td><td style='border: 1px solid #ddd; padding: 8px;'>%s</td></tr>",
+                        srNo++, entry.getKey(), entry.getValue()
+                ));
+            }
+        }
+
+        // Fetch the logo from Firebase and encode it as Base64
+        String profile = environment.getActiveProfiles().length > 0 ? environment.getActiveProfiles()[0] : "default";
+        FirebaseHelper firebaseHelper = new FirebaseHelper(googleCred);
+        String filePath = profile + "/" + carrier.getDatabaseName() + "/Logo.png";
+        byte[] logoBytes = firebaseHelper.downloadFileAsBytesFromFirebase(filePath);
+        String companyLogoBase64 = Base64.getEncoder().encodeToString(logoBytes);
+
+        String emailTemplate = String.format(
+                """
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <header style="padding: 10px; text-align: center; background-color: #f3f4f6;">
+                        <img src="cid:companyLogo" alt="Company Logo" style="width: 300px; height: 200px; margin-bottom: 20px;">
+                        <h2>Import Report for %s</h2>
+                    </header>
+                    <main style="padding: 20px;">
+                        <p>%s</p>
+                        %s
+                        <table style="width: 100%%; border-collapse: collapse; margin-top: 20px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f3f4f6;">Sr No</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f3f4f6;">Import Field</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f3f4f6;">Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                %s
+                            </tbody>
+                        </table>
+                    </main>
+                    <footer style="padding: 10px; text-align: center; background-color: #f3f4f6; font-size: 12px; color: #666;">
+                        <p>Thank you for choosing us!</p>
+                    </footer>
+                </div>
+                """,
+                importType,
+                status,
+                errors != null && !errors.isEmpty() ? "<p>Details of errors are listed below:</p>" : "",
+                tableRows
+        );
+
+        String plainText = String.format(
+                "Import Report for %s\n\n" +
+                        "%s\n\n" +
+                        "%s\n\n" +
+                        "Error Details:\n%s\n\n" +
+                        "Thank you for choosing us!",
+                importType,
+                status,
+                errors != null && !errors.isEmpty() ? "Details of errors are listed below:" : "",
+                errors != null && !errors.isEmpty() ? errors.entrySet().stream()
+                        .map(entry -> String.format("Sr No: %d\nImport Field: %s\nError: %s\n",
+                                errors.entrySet().stream().toList().indexOf(entry) + 1, entry.getKey(), entry.getValue()))
+                        .collect(Collectors.joining("\n"))
+                        : "No errors reported."
+        );
+
+        // Create SendEmailRequest object with the details
+        SendEmailRequest sendEmailRequest = new SendEmailRequest();
+        sendEmailRequest.setToAddress(List.of(userEmail));
+        sendEmailRequest.setSubject("Account Confirmation with temporary password");
+        sendEmailRequest.setHtmlContent(emailTemplate);
+        sendEmailRequest.setPlainTextContent(plainText);
+
+        // Create an attachment for the company logo
+        Attachments logoAttachment = new Attachments();
+        logoAttachment.setFilename("logo.png");
+        logoAttachment.setContent(companyLogoBase64);
+        logoAttachment.setType("image/png");
+        logoAttachment.setDisposition("inline");
+        logoAttachment.setContentId("companyLogo"); // Reference in HTML
+
+        // Create and add the excel attachment
+        if(errors != null && !errors.isEmpty()) {
+            byte[] excelAttachmentData = generateExcelFileForBulkImportErrors(errors);
+            Attachments excelAttachment = new Attachments();
+            excelAttachment.setFilename("ImportReport.xlsx");
+            excelAttachment.setContent(Base64.getEncoder().encodeToString(excelAttachmentData));
+            excelAttachment.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            excelAttachment.setDisposition("attachment");
+        }
+
+        // Add attachment to the request
+        List<Attachments> attachments = new ArrayList<>();
+        attachments.add(logoAttachment);
+        sendEmailRequest.setAttachments(attachments);
+
+        // Send the account confirmation email using email helper
+        return emailHelper.sendEmail(sendEmailRequest);
+    }
+
     public Response<Boolean> sendNewUserAccountConfirmation(
-            Environment environment,
-            Carrier carrier,
-            GoogleCred googleCred,
             long userId,
             String userToken,
             String userEmail,
@@ -128,35 +257,6 @@ public class EmailTemplates {
         sendEmailRequest.setAttachments(attachments);
 
         // Send the account confirmation email using email helper
-        return emailHelper.sendEmail(sendEmailRequest);
-    }
-
-    /**
-     * Sends an account confirmation email to the specified user.
-     * @param userId The ID of the user.
-     * @param userToken The token associated with the user.
-     * @param userEmail The email address of the user.
-     * @return A response indicating the success status and message.
-     */
-    public Response<Boolean> sendAccountConfirmationEmail(long userId, String userToken, String userEmail) {
-        // Generate the confirmation account link
-        String confirmAccountLink =
-                "https://localhost:6001/dashboard/ConfirmEmail?UserId=" + userId + "&Token=" + java.net.URLEncoder.encode(userToken, java.nio.charset.StandardCharsets.UTF_8);
-
-        // Create the email template and plain text content
-        String emailTemplate =
-                "<p>Please Click on the Link below to confirm your Email account</p><br/><a href='" + confirmAccountLink + "'>" + confirmAccountLink + "</a>";
-        String plainText = "Please Click on the Link below to confirm your Email account \n" +
-                confirmAccountLink;
-
-        // Create a SendEmailRequest object with the necessary details
-        SendEmailRequest sendEmailRequest = new SendEmailRequest();
-        sendEmailRequest.setToAddress(List.of(userEmail));
-        sendEmailRequest.setSubject("Account Confirmation");
-        sendEmailRequest.setHtmlContent(emailTemplate);
-        sendEmailRequest.setPlainTextContent(plainText);
-
-        // Send the account confirmation email using the email helper
         return emailHelper.sendEmail(sendEmailRequest);
     }
 

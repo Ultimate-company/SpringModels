@@ -61,11 +61,11 @@ public class SalesOrderSubTranslator extends Translator implements ISalesOrderSu
     }
 
     @Override
-    public Response<byte[]> getSalesOrderPDF(long salesOrderId) {
+    public Response<String> getSalesOrderPDF(long salesOrderId) {
         return httpResponse(getApiUrl(ApiRoutes.ApiControllerNames.SALES_ORDER + "/" + ApiRoutes.SalesOrderSubRoute.GET_SALES_ORDER_PDF,
                         Collections.singletonMap("id", salesOrderId)),
                 "GET",
-                new TypeToken<Response<Boolean>>(){}.getType(),
+                new TypeToken<Response<String>>(){}.getType(),
                 null);
     }
 
