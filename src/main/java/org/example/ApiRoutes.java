@@ -377,8 +377,11 @@ public class ApiRoutes {
         public static final String GET_COLORS = "getColors";
         public static final String GET_STATES = "getStates";
         public static final String GET_ROLES = "getRoles";
+        public static final String GET_TIMEZONES = "getTimeZones";
         public static final String GET_LEAD_STATUSES = "getLeadStatuses";
+        public static final String GET_PRIORITY_STATUSES = "getPriorityStatuses";
         public static final String GET_PAYMENT_OPTIONS = "getPaymentOptions";
+        public static final String GET_SCHEDULER_EVENT_TYPES_OPTIONS = "getSchedulerEventTypesOptions";
         public static final String GET_FILTER_OPTIONS = "getFilterOptions";
         public static final String GET_SORT_OPTIONS = "getSortOptions";
         public static final String GET_STATE_CITY_MAPPING = "getStateCityMappingOptions";
