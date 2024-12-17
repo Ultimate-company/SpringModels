@@ -1,7 +1,9 @@
 package org.example.CommonHelpers;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.example.Annotations.IgnoreCopy;
 import org.example.Constants.*;
+import org.slf4j.event.KeyValuePair;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -890,9 +892,9 @@ public class HelperUtils {
         return StateCityMapper.stateCityMap;
     }
 
-    public static TreeMap<String, List<TreeMap<String, String>>> getSchedulerEventTypes() {
+    public static TreeMap<String, List<Pair<String, String>>> getSchedulerEventTypes() {
         // Define a map to hold payment options
-        TreeMap<String, List<TreeMap<String, String>>> eventOptions = new TreeMap<>();
+        TreeMap<String, List<Pair<String, String>>> eventOptions = new TreeMap<>();
 
         // Initialize a TreeMap with entries
         TreeMap<String, Class<?>> categories = new TreeMap<>();
@@ -910,7 +912,7 @@ public class HelperUtils {
             String category = entry.getKey();
             Class<?> clazz = entry.getValue();
 
-            List<TreeMap<String, String>> optionList = new ArrayList<>();
+            List<Pair<String, String>> optionList = new ArrayList<>();
             try {
                 // Retrieve labels using reflection
                 Method getLabelsMethod = clazz.getMethod("getLabels");
@@ -918,10 +920,7 @@ public class HelperUtils {
 
                 // Populate the option list
                 for (Map.Entry<String, String> labelEntry : labels.entrySet()) {
-                    TreeMap<String, String> optionMap = new TreeMap<>();
-                    optionMap.put("label", labelEntry.getValue());
-                    optionMap.put("value", labelEntry.getKey());
-                    optionList.add(optionMap);
+                    optionList.add(Pair.of(labelEntry.getKey(), labelEntry.getValue()));
                 }
             } catch (Exception e) {
                 e.printStackTrace(); // Handle exceptions appropriately

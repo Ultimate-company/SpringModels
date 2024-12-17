@@ -37,6 +37,7 @@ public class FactoryExtensions
     private IWebTemplateSubTranslator webTemplateSubTranslator;
     private IGridSubTranslator gridSubTranslator;
     private IBulkSubTranslator bulkSubTranslator;
+    private IEventSubTranslator eventSubTranslator;
 
     public FactoryExtensions(String token, Long userId, Long carrierId, String apiUrl)
     {
@@ -65,6 +66,7 @@ public class FactoryExtensions
             setWebTemplateSubTranslator(new WebTemplateSubTranslator(token, userId, carrierId, apiUrl));
             setGridSubTranslator(new GridSubTranslator(token, userId, carrierId, apiUrl));
             setBulkSubTranslator(new BulkSubTranslator(token, userId, carrierId, apiUrl));
+            setEventSubTranslator(new EventSubTranslator(token, userId, carrierId, apiUrl));
         }
         else if(userId != null) {
             setCarrierSubTranslator(new CarrierSubTranslator(token, userId, null, apiUrl));
