@@ -3,15 +3,13 @@ package org.example.CommonHelpers;
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.Annotations.IgnoreCopy;
 import org.example.Constants.*;
-import org.slf4j.event.KeyValuePair;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class HelperUtils {
    public static Map<String, String> getColors() {
@@ -1018,6 +1016,12 @@ public class HelperUtils {
                 // Set the field value in the destination object
                 Field destinationField = destinationClass.getDeclaredField(field.getName());
                 destinationField.setAccessible(true);
+
+                if(field.getType() == LocalDateTime.class && destinationField.getType() == String.class) {
+                    // Cast the value to ZonedDateTime
+                    value = DateHelper.convertLocalDateTimeToString((LocalDateTime) value);
+                }
+
                 destinationField.set(destination, value);
             } catch (IllegalAccessException | NoSuchFieldException e) {
                 throw new RuntimeException(e);

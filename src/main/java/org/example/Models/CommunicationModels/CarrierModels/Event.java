@@ -19,8 +19,9 @@ public class Event {
 
 
     // Event date, time, and location
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private String startDateTime;
+    private String endDateTime;
+
     private String timeZone;
     private String location;
 

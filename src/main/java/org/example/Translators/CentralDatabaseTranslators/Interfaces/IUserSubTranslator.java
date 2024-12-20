@@ -32,7 +32,7 @@ public interface IUserSubTranslator {
      * @param id The ID of the user.
      * @return Response containing the user information.
      */
-    Response<UserResponseModel> getUserById(long id) throws IOException;
+    Response<List<UserResponseModel>> getUsersByIds(List<Long> userIds);
 
     /**
      * Creates a new user.
