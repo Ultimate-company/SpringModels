@@ -8,6 +8,7 @@ import org.example.Models.RequestModels.ApiRequestModels.ImportUsersRequestModel
 import org.example.Models.RequestModels.ApiRequestModels.UsersRequestModel;
 import org.example.Models.RequestModels.GridRequestModels.GetUsersRequestModel;
 import org.example.Models.ResponseModels.ApiResponseModels.PaginationBaseResponseModel;
+import org.example.Models.ResponseModels.ApiResponseModels.ProductsResponseModel;
 import org.example.Models.ResponseModels.ApiResponseModels.UserResponseModel;
 import org.example.Models.ResponseModels.Response;
 import org.example.Translator;
@@ -15,6 +16,7 @@ import org.example.Translators.CentralDatabaseTranslators.Interfaces.IUserSubTra
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserSubTranslator extends Translator implements IUserSubTranslator {
 
@@ -41,11 +43,13 @@ public class UserSubTranslator extends Translator implements IUserSubTranslator 
     }
 
     @Override
-    public Response<UserResponseModel> getUserById(long id) {
+    public Response<List<UserResponseModel>> getUsersByIds(List<Long> ids) {
         return httpResponse(getApiUrl(ApiRoutes.ApiControllerNames.USER + "/" + ApiRoutes.UsersSubRoute.GET_USER_BY_ID,
-                        Collections.singletonMap("id", id)),
+                        Collections.singletonMap("id", ids.stream()
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(",")))),
                 "GET",
-                new TypeToken<Response<UserResponseModel>>(){}.getType(),
+                new TypeToken<Response<List<UserResponseModel>>>(){}.getType(),
                 null);
     }
 

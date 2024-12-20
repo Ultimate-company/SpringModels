@@ -67,8 +67,8 @@ public class Authorizations {
 
     // EventsPermissions
     public static final String INSERT_EVENTS_PERMISSION = "InsertEvents";
-    public static final String EDIT_EVENTS_PERMISSION = "EditEvents";
-    public static final String DELETE_EVENTS_PERMISSION = "DeleteEvents";
+    public static final String UPDATE_EVENTS_PERMISSION = "UpdateEvents";
+    public static final String TOGGLE_EVENTS_PERMISSION = "ToggleEvents";
     public static final String VIEW_EVENTS_PERMISSION = "ViewEvents";
 
     // ApiKeysPermissions

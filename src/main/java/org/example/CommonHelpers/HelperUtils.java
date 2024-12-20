@@ -1,5 +1,6 @@
 package org.example.CommonHelpers;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.example.Annotations.IgnoreCopy;
 import org.example.Constants.*;
 
@@ -7,9 +8,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class HelperUtils {
    public static Map<String, String> getColors() {
@@ -856,6 +856,10 @@ public class HelperUtils {
         );
     }
 
+    public static Map<String, String> getTimeZones() {
+       return TimeZones.getTimeZoneMap();
+    }
+
     public static List<String> getSortOptions() {
         return List.of(
                 SortOptions.DEFAULT,
@@ -868,6 +872,16 @@ public class HelperUtils {
         );
     }
 
+    public static List<String> getPriorityStatus() {
+        return List.of(
+                PriorityStatus.LOW,
+                PriorityStatus.MEDIUM,
+                PriorityStatus.HIGH,
+                PriorityStatus.URGENT,
+                PriorityStatus.CRITICAL
+        );
+    }
+
     public static TreeSet<String> getFontStyles() {
         return new TreeSet<>(FontStyles.getLabels().keySet());
     }
@@ -876,6 +890,46 @@ public class HelperUtils {
         return StateCityMapper.stateCityMap;
     }
 
+    public static TreeMap<String, List<Pair<String, String>>> getSchedulerEventTypes() {
+        // Define a map to hold payment options
+        TreeMap<String, List<Pair<String, String>>> eventOptions = new TreeMap<>();
+
+        // Initialize a TreeMap with entries
+        TreeMap<String, Class<?>> categories = new TreeMap<>();
+
+        // Add entries to the TreeMap based on event categories
+        categories.put("Work-Related Events", SchedulerEventTypes.WorkRelatedEvents.class);
+        categories.put("Personal Events", SchedulerEventTypes.PersonalEvents.class);
+        categories.put("Social Events", SchedulerEventTypes.SocialEvents.class);
+        categories.put("Educational Events", SchedulerEventTypes.EducationalEvents.class);
+        categories.put("Special Occasions", SchedulerEventTypes.SpecialOccasions.class);
+        categories.put("Miscellaneous Events", SchedulerEventTypes.MiscellaneousEvents.class);
+
+        // Iterate through each category and populate payment options
+        for (Map.Entry<String, Class<?>> entry : categories.entrySet()) {
+            String category = entry.getKey();
+            Class<?> clazz = entry.getValue();
+
+            List<Pair<String, String>> optionList = new ArrayList<>();
+            try {
+                // Retrieve labels using reflection
+                Method getLabelsMethod = clazz.getMethod("getLabels");
+                TreeMap<String, String> labels = (TreeMap<String, String>) getLabelsMethod.invoke(null);
+
+                // Populate the option list
+                for (Map.Entry<String, String> labelEntry : labels.entrySet()) {
+                    optionList.add(Pair.of(labelEntry.getKey(), labelEntry.getValue()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // Handle exceptions appropriately
+            }
+
+            // Add the populated option list to the map
+            eventOptions.put(category, optionList);
+        }
+
+        return eventOptions;
+    }
 
     public static TreeMap<String, List<TreeMap<String, String>>> getPaymentOptions() {
         // Define a map to hold payment options
@@ -891,7 +945,6 @@ public class HelperUtils {
         categories.put("Supported UPI", PaymentOptions.SupportedUPI.class);
         categories.put("Supported Cardless EMI", PaymentOptions.SupportedCardlessEMI.class);
         categories.put("Supported Pay Later", PaymentOptions.SupportedPayLater.class);
-
 
         // Iterate through each category and populate payment options
         for (Map.Entry<String, Class<?>> entry : categories.entrySet()) {
@@ -963,6 +1016,12 @@ public class HelperUtils {
                 // Set the field value in the destination object
                 Field destinationField = destinationClass.getDeclaredField(field.getName());
                 destinationField.setAccessible(true);
+
+                if(field.getType() == LocalDateTime.class && destinationField.getType() == String.class) {
+                    // Cast the value to ZonedDateTime
+                    value = DateHelper.convertLocalDateTimeToString((LocalDateTime) value);
+                }
+
                 destinationField.set(destination, value);
             } catch (IllegalAccessException | NoSuchFieldException e) {
                 throw new RuntimeException(e);

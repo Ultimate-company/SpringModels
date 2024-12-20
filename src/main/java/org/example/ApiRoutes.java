@@ -21,7 +21,7 @@ public class ApiRoutes {
         public static final String GRID = "Grid";
         public static final String USERLOG = "UserLog";
         public static final String LOGIN = "Login";
-        public static final String EVENTS = "Events";
+        public static final String EVENT = "Event";
         public static final String PERMISSION = "Permission";
         public static final String TODO = "ToDo";
         public static final String SUPPORT = "Support";
@@ -31,6 +31,13 @@ public class ApiRoutes {
         public static final String WEB_TEMPLATE = "WebTemplate";
         public static final String DATA = "Data";
 
+    }
+    public static class EventSubRoute {
+        public static final String GET_ALL_EVENTS_FOR_USERID_BASED_ON_MONTH = "getAllEventsForUserIdBasedOnMonth";
+        public static final String CREATE_EVENT = "createEvent";
+        public static final String UPDATE_EVENT = "updateEvent";
+        public static final String TOGGLE_EVENT = "toggleEvent";
+        public static final String GET_EVENT_DETAILS_BY_ID = "getEventDetailsById";
     }
 
     public static class SupportSubRoute {
@@ -271,15 +278,6 @@ public class ApiRoutes {
         public static final String GET_USER_BY_EMAIL_PB = "getUserByEmail_Pb";
     }
 
-
-    public enum EventsSubRoute {
-        AddEvent,
-        EditEvent,
-        ToggleEvent,
-        GetEventDetailsById,
-        GetEvents
-    }
-
     public static class PermissionsSubRoute {
 
         public static final String CREATE_PERMISSIONS = "CreatePermissions";
@@ -377,8 +375,11 @@ public class ApiRoutes {
         public static final String GET_COLORS = "getColors";
         public static final String GET_STATES = "getStates";
         public static final String GET_ROLES = "getRoles";
+        public static final String GET_TIMEZONES = "getTimeZones";
         public static final String GET_LEAD_STATUSES = "getLeadStatuses";
+        public static final String GET_PRIORITY_STATUSES = "getPriorityStatuses";
         public static final String GET_PAYMENT_OPTIONS = "getPaymentOptions";
+        public static final String GET_SCHEDULER_EVENT_TYPES_OPTIONS = "getSchedulerEventTypesOptions";
         public static final String GET_FILTER_OPTIONS = "getFilterOptions";
         public static final String GET_SORT_OPTIONS = "getSortOptions";
         public static final String GET_STATE_CITY_MAPPING = "getStateCityMappingOptions";
